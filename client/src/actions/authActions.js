@@ -12,12 +12,14 @@ import {
   REGISTER_FAIL
 } from './types';
 
-// check token & load user/whoami [GET api/auth/user]
+// DETERMINE USER
+// fired when App component mounts
+// check token in localstorage & load determine whoami [GET api/auth/user]
 export const loadUser = () => (dispatch, getState) => {
-  // user loading
+  // user loading..
   dispatch({ type: USER_LOADING }); // will set isLoading in auth reducer to true
 
-  // fecth user,
+  // whoami na?
   // [if 401, 404, etc catch block is fired, try edit path and inspect console or redux tool]
   axios
     .get('api/auth/user', tokenConfig(getState))
@@ -35,8 +37,43 @@ export const loadUser = () => (dispatch, getState) => {
     });
 };
 
-// setup headers & token
-// import in any file needing this, :)
+// SIGNUP USER
+export const registerUser = ({ name, email, password }) => dispatch => {
+  // headers
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  // request body
+  const body = JSON.stringify({ name, email, password });
+
+  axios
+    .post('/api/users', body, config)
+    .then(res =>
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data // user obj + token
+      })
+    )
+    .catch(err => {
+      dispatch(
+        returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
+      );
+      dispatch({
+        type: REGISTER_FAIL
+      });
+    });
+};
+
+// LOGOUT
+export const logout = () => {
+  return {
+    type: LOGOUT_SUCCESS
+  };
+};
+
+// SETUP HEADERS WITH TOKEN
 export const tokenConfig = getState => {
   // get token from localstorage
   const token = getState().auth.token; // will get value of token in auth reducer
@@ -52,6 +89,18 @@ export const tokenConfig = getState => {
   if (token) {
     config.headers['x-auth-token'] = token;
   }
+
+  return config;
+};
+
+// SETUP HEADERS WITHOUT TOKEN
+export const tokenlessConfig = () => {
+  // headers
+  const config = {
+    headers: {
+      'Content-type': 'application/json'
+    }
+  };
 
   return config;
 };
