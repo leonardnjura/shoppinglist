@@ -2,10 +2,11 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 
 function auth(req, res, next) {
-  const token = req.header('Authorization');
+  const token = req.header('x-auth-token');
 
-  //check for token
-  if (!token) res.status(401).json({ msg: 'No token provided' });
+  // check for token
+  // ensure to return from function to avoid resending headers
+  if (!token) return res.status(401).json({ msg: 'No token provided' }); 
 
   try {
     // verify token
