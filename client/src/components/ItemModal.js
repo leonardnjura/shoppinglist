@@ -61,16 +61,16 @@ class ItemModal extends Component {
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="item">Item</Label>
+                {/* <Label for="item">Item</Label> */}
                 <Input
                   type="text"
                   name="name" // URI param | match what is in state | { id: uuid(), name: 'Bread' }
                   id="item"
-                  placeholder="Add shopping item"
+                  placeholder="Enter item"
                   onChange={this.onChange}
                 />
                 <Button type="submit" style={{ marginTop: '2rem' }} block>
-                  Add Item
+                  Save
                 </Button>
               </FormGroup>
             </Form>
