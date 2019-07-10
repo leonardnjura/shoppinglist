@@ -14,6 +14,20 @@ router.get('/', (req, res) => {
     .then(items => res.json(items));
 });
 
+// @route   GET api/items/shopping/:yyyy/:mm/:dd
+// @desc    TODO: Fetch all items in specified day
+// @access  Public
+router.get('/shopping/:yyyy/:mm/:dd', (req, res) => {
+  var data = {
+    shoppingDay: {
+      yyyy: req.params.yyyy,
+      mm: req.params.mm,
+      dd: req.params.dd
+    }
+  };
+  res.json(data);
+});
+
 // @route   POST api/items
 // @desc    Create an item
 // @access  Protected
@@ -31,8 +45,12 @@ router.post('/', auth, (req, res) => {
 // @access  Protected
 router.delete('/:id', auth, (req, res) => {
   Item.findById(req.params.id)
-    .then(item => 
-      item.remove().then(() => res.status(204).json({ success: true, msg: 'Item deleted' })) 
+    .then(item =>
+      item
+        .remove()
+        .then(() =>
+          res.status(204).json({ success: true, msg: 'Item deleted' })
+        )
     )
     .catch(err => res.status(404).json({ success: false }));
 });

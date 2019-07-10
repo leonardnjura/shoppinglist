@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
       jwt.sign(
         { id: user.id, email: user.email },
         config.get('JWT_SECRET'),
-        { expiresIn: 3600 * 1 },
+        { expiresIn: 3600 * 7 },
         (err, token) => {
           if (err) throw err;
           res.json({
@@ -54,10 +54,16 @@ router.post('/', (req, res) => {
 // @route   GET api/auth/user
 // @desc    Determine user
 // @access  Protected
-router.get('/whoami', auth, (req, res) => {
+router.get('/user', auth, (req, res) => {
   User.findById(req.user.id)
     .select('-password') // grab user data but pswd
     .then(user => res.json(user));
 });
+router.get('/whoami', auth, (req, res) => {
+  User.findById(req.user.id)
+    .select('-password') // redundant
+    .then(user => res.json(user));
+});
+
 
 module.exports = router;
