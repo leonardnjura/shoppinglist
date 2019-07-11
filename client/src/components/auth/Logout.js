@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { NavLink, Tooltip } from 'reactstrap';
-import { FaSignOutAlt } from 'react-icons/fa';
+import LogoutIcon from 'mdi-react/LogoutIcon';
 
 import { connect } from 'react-redux';
 import { logout } from '../../actions/authActions';
@@ -8,9 +8,10 @@ import PropTypes from 'prop-types';
 
 class Logout extends Component {
   static propTypes = {
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
   };
-  
+
   state = {
     tooltipOpen: false
   };
@@ -19,23 +20,37 @@ class Logout extends Component {
     this.setState({
       tooltipOpen: !this.state.tooltipOpen
     });
-  }
+  };
 
   render() {
+    const { isAuthenticated, user } = this.props.auth;
+
     return (
       <Fragment>
         <NavLink onClick={this.props.logout} href="#">
-           <FaSignOutAlt id="logoutIcon"/>
-           <Tooltip placement="left" isOpen={this.state.tooltipOpen} target="logoutIcon" toggle={this.toggle}>
-          Sign out
-        </Tooltip>
+          <span id="logoutIcon">
+            <LogoutIcon  />
+          </span>
+          <Tooltip
+            placement="left"
+            isOpen={this.state.tooltipOpen}
+            target="logoutIcon"
+            toggle={this.toggle}
+          >
+            Log out {isAuthenticated ? user.name : ''}
+          </Tooltip>
         </NavLink>
       </Fragment>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  //name in root reducer(LHS)
+  auth: state.auth
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { logout }
 )(Logout);
