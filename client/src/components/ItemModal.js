@@ -87,7 +87,7 @@ class ItemModal extends Component {
           toggle={this.toggleTooltip}
         >
           Add item to shopping list
-        </Tooltip></Fragment>: <h5 className="mb-3 ml-3">Please login to mange items</h5>}
+        </Tooltip></Fragment>: <h5 className="mb-3 ml-3">Please login to manage items</h5>}
 
         
 

@@ -1,0 +1,49 @@
+ITEMS
+========================================================
+###add item with x-auth-token
+POST {{url}}/api/items
+{
+	"name": "Fanta Passion"
+}
+
+###get all items
+GET {{url}}/api/items
+
+
+###delete item with x-auth-token
+DELETE {{url}}/api/items/:id
+
+
+
+USERS
+========================================================
+###sign up
+POST {{url}}/api/auth/signup
+{
+	"email": "shirleen@localhost.com",
+	"password": "0900"
+}
+
+###sign in
+POST {{url}}/api/auth/signin
+{
+	"email": "shirleen@localhost.com",
+	"password": "0900"
+}
+
+###get all users
+GET {{url}}/api/auth/users
+
+##whoami with x-auth-token 
+GET {{url}}/api/auth/user
+
+###update user profile with x-auth-token
+PUT {{url}}/api/auth/users/:id
+{
+	"firstname": "Pendo",
+	"lastname": "Elizabeth"
+}
+
+###delete user with x-auth-token
+DELETE {{url}}/api/auth/users/:id
+
